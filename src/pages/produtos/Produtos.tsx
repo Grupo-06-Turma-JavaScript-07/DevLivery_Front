@@ -1,4 +1,3 @@
-// src/pages/produtos/Produtos.tsx
 import CardProduto from "../../components/produtos/cardprodutos/CardProdutos";
 
 // Dados de exemplo para os produtos

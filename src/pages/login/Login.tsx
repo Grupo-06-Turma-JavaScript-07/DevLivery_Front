@@ -1,6 +1,5 @@
-// src/pages/login/Login.tsx
 import { useState, type ChangeEvent, type FormEvent } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { ToastContainer, } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useAuthContext } from '../../contexts/AuthContext';
@@ -11,13 +10,13 @@ const EyeOff = ({ className = '' }) => (<svg viewBox="0 0 24 24" className={clas
 type Credenciais = { usuario: string; senha: string; };
 
 export default function Login() {
-  const navigate = useNavigate();
   const { handleLogin, isLoading } = useAuthContext();
 
 
   const [form, setForm] = useState<Credenciais>({ usuario: '', senha: '' });
   const [showPass, setShowPass] = useState(false);
-  const [role, setRole] = useState<'user' | 'personal'>('user');
+  const [role, setRole] = useState<'user' | 'fornecedor'>('user');
+
 
   function onChange(e: ChangeEvent<HTMLInputElement>) {
     setForm(f => ({ ...f, [e.target.name]: e.target.value }));
@@ -46,7 +45,7 @@ export default function Login() {
       <main className="flex-1 grid place-items-center px-4 py-10">
         <div className="w-full max-w-md">
           <div className="bg-white rounded-2xl shadow-xl border border-[#ececf0] overflow-hidden">
-            {/* Faixa Verde Adicionada */}
+
             <div className="h-2 bg-[#7d8d2a]" />
 
             <div className="p-8">
@@ -74,9 +73,9 @@ export default function Login() {
                     <input
                       type="radio"
                       name="role"
-                      value="personal"
-                      checked={role === 'personal'}
-                      onChange={() => setRole('personal')}
+                      value="fornecedor"
+                      checked={role === 'fornecedor'}
+                      onChange={() => setRole('fornecedor')}
                       className="h-4 w-4 text-[#7d8d2a] focus:ring-[#9cb03b]"
                     />
                     Sou Fornecedor
@@ -125,7 +124,7 @@ export default function Login() {
             </div>
           </div>
 
-          {/* Link "Voltar para Home" Adicionado */}
+          {/* Link "Voltar para Home" */}
           <div className="text-center mt-6">
             <Link to="/" className="text-sm text-gray-600 hover:underline">← Voltar para a Home</Link>
           </div>
