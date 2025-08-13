@@ -1,53 +1,52 @@
+// src/contexts/AuthContext.tsx
 import { createContext, type ReactNode, useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import type Usuario from '../models/Usuario';
-import type UsuarioLogin from '../models/UsuarioLogin';
+import { login } from '../service/Service';
 import { ToastAlerta } from '../utils/ToastAlerta';
 
-interface AppContextProps {
+// Interface para as credenciais que o formulário de login envia
+interface CredenciaisLogin {
+  usuario: string;
+  senha: string;
+}
+
+interface AuthContextProps {
   usuario: Usuario;
   userRole: 'user' | 'personal' | null;
-  handleLogin(usuarioLogin: UsuarioLogin, role: 'user' | 'personal'): Promise<void>;
+  handleLogin(credenciais: CredenciaisLogin, role: 'user' | 'personal'): Promise<void>;
   handleLogout(): void;
   isLoading: boolean;
   handleCadastro(usuario: Usuario, role: 'user' | 'personal'): void;
 }
 
-interface AppProviderProps {
+interface AuthProviderProps {
   children: ReactNode;
 }
 
-const AppContext = createContext({} as AppContextProps);
+const AuthContext = createContext({} as AuthContextProps);
 
-export function AppProvider({ children }: AppProviderProps) {
+export function AuthProvider({ children }: AuthProviderProps) {
   const navigate = useNavigate();
   const [usuario, setUsuario] = useState<Usuario>({} as Usuario);
-
-
   const [userRole, setUserRole] = useState<'user' | 'personal' | null>(null);
-
   const [isLoading, setIsLoading] = useState(false);
 
-  async function handleLogin(usuarioLogin: UsuarioLogin, role: 'user' | 'personal') {
+  async function handleLogin(credenciais: CredenciaisLogin, role: 'user' | 'personal') {
     setIsLoading(true);
     try {
-
-      await loginService(`/user/logar`, usuarioLogin, (usuarioLogado: Usuario) => {
-        setUsuario(usuarioLogado);
-        setUserRole(role);
-      });
-
+      await login(`/user/logar`, credenciais, setUsuario);
       ToastAlerta("Usuário logado com sucesso!", "sucesso");
+      setUserRole(role);
 
       if (role === 'user') {
         navigate('/perfil');
       } else {
         navigate('/perfilpersonal');
       }
-
-    } catch (error) {
-      console.log(error);
-      ToastAlerta("Dados do usuário inconsistentes.", "erro");
+    } catch (error: any) {
+      const errorMessage = error.response?.data?.message || 'Dados do usuário inconsistentes.';
+      ToastAlerta(errorMessage, 'erro');
     } finally {
       setIsLoading(false);
     }
@@ -65,24 +64,18 @@ export function AppProvider({ children }: AppProviderProps) {
 
   function handleLogout() {
     setUsuario({} as Usuario);
-
     setUserRole(null);
     navigate('/login');
   }
 
   return (
-
-    <AppContext.Provider value={{ usuario, userRole, handleLogin, handleLogout, isLoading, handleCadastro }}>
+    <AuthContext.Provider value={{ usuario, userRole, handleLogin, handleLogout, isLoading, handleCadastro }}>
       {children}
-    </AppContext.Provider>
+    </AuthContext.Provider>
   );
 }
 
-export function useAppContext() {
-  return useContext(AppContext);
+// O hook para usar o contexto
+export function useAuthContext() {
+  return useContext(AuthContext);
 }
-
-function loginService(arg0: string, usuarioLogin: UsuarioLogin, arg2: (usuarioLogado: Usuario) => void) {
-  throw new Error('Function not implemented.');
-}
-

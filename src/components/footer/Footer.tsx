@@ -1,20 +1,28 @@
 function Footer() {
-  return (
-    <>
-      <div className="flex justify-center bg-yellow-400  text-neutral-900">
-        <div className="container flex gap-4 justify-center items-center py-4">
-          <img src="https://ik.imagekit.io/pedrolazzz/IMG_2249.PNG?updatedAt=1754934105765" alt="Logo FitHub" className="w-10 h-10" />
-          <div className="flex flex-col items-center">
-            <p className="text-xl font-bold">
-              DevLivery 
-            </p>
-            <p className="text-lg">Conheça nossos serviços!</p>
-          </div>
-        </div>
-      </div>
-    </>
-  )
+    return (
+        <footer className="bg-[#7d8d2a] border-t border-[white]">
+            <div className="max-w-7xl mx-auto px-4 py-10 text-center text-sm text-[#4b4b4b]">
+                
+                {/* Links de Navegação */}
+                <div className="flex items-center text-[#f1f1f3] justify-center gap-4 mb-4">
+                    <a href="#" className="hover:underline">Home</a>
+                    <a href="#" className="hover:underline">Sobre Nós</a>
+                    <a href="#" className="hover:underline">Blog</a>
+                    <a href="#" className="hover:underline">Contato</a>
+                    <a href="#" className="hover:underline">Política de Devolução</a>
+                </div>
+
+                {/* Container para centralizar o Logo e o Copyright */}
+                <div className="flex items-center justify-center text-[#f1f1f3] gap-2 mt-4">
+                    {/* Imagem do Logo */}
+                    <div className="w-6 h-6 rounded-full bg-[#e7a545] grid place-items-center font-black text-white text-xs">D</div>
+                    
+                    {/* Texto de Copyright */}
+                    <p>Copyright © {new Date().getFullYear()} DevLivery. All rights reserved.</p>
+                </div>
+            </div>
+        </footer>
+    );
 }
 
-export default Footer
-
+export default Footer;

@@ -1,53 +1,45 @@
-import { Link } from "react-scroll";
+// src/pages/principal/Principal.tsx
+import BotaoAcao from '../../components/botaoacao/BotaoAcao';
+import SeloDePreco from '../../components/selodepreco/SeloDePreco';
+import Avaliacao from '../../components/avaliacao/Avaliacao';
 
-function Principal() {
+export default function Principal() {
     return (
-
-        <>
-            {/* // PÁGINA DO HOME */}
-
-            {/* 'relative' para ancorar a onda e 'pb-20' (padding-bottom) para criar espaço para ela */}
-            {/* Tinha que mudar para class name */}
-            <div className="home min-h-screen"> 
-
-                <div className="w-full text-slate-800 relative pb-20 min-h-screen flex flex-col">
-                    <div className="container mx-auto flex flex-col justify-center items-center pt-65 flex-grow">
-                        {/* Coluna do texto */}
-                        <div className="flex flex-col justify-center items-center text-center gap-y-6 ">
-                            <h2 className="text-6xl text-white font-bold font-anton [text-shadow:2px_2px_4px_rgba(0,0,0,0.8)]">ONDE A SUA ROTINA FAZ PUSH <br />E SEU CORPO DÁ PULL</h2>
-                            <div className="flex justify-center">
-                                <Link
-                                    to='produtos'
-                                    spy={true}
-                                    smooth={true}
-                                    offset={-70}
-                                    duration={500}
-                                    className="cursor-pointer hover:bg-transparent hover:border-2 hover:border-yellow-400 bg-yellow-400 border-[#f9ef23 text-black hover:text-yellow-400 font-bold py-2 px-4 rounded shadow-lg shadow-black/50"
-                                >
-                                    INSCREVA-SE HOJE!
-                                </Link>
-                            </div>
+        <section className="relative bg-[#f0eff2] text-[#1a1a1a]">
+            <div className="max-w-7xl mx-auto px-4 py-10 grid lg:grid-cols-2 gap-10 items-center">
+                {/* Imagem principal */}
+                <div className="relative order-2 lg:order-1">
+                    <div className="relative w-full max-w-lg mx-auto">
+                        <img
+                            src="https://images.unsplash.com/photo-1604908812070-8f3f1b7c848f?q=80&w=1200&auto=format&fit=crop"
+                            alt="Mutton Biryani"
+                            className="rounded-2xl shadow-2xl border border-black/10"
+                        />
+                        <div className="absolute -top-4 -left-4">
+                            <SeloDePreco price={360} old={410} className="bg-[#7d8d2a]" />
                         </div>
-                        
                     </div>
-                    {/* código da onda no final do container pai */}
-                    <div className="absolute bottom-0 left-0 w-full overflow-hidden leading-[0]">
-                        <svg
-                            className="relative block w-full h-[75px] rotate-180" // Controle a altura da onda aqui
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 1200 120"
-                            preserveAspectRatio="none"
-                        >
-                            <path
-                                d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z"
-                                className="fill-neutral-900"
-                            ></path>
-                        </svg>
+                </div>
+
+                {/* Texto */}
+                <div className="order-1 lg:order-2">
+                    <p className="text-xl italic text-[#6b6b6b]">Saudável & Saboroso</p>
+                    <h1 className="text-5xl md:text-6xl font-black leading-tight">Delivery Saudável</h1>
+                    <div className="mt-2"><Avaliacao /></div>
+                    <p className="mt-4 text-[#4b4b4b] max-w-xl">
+                        Ingredientes frescos e selecionados, preparados com cuidado para uma refeição deliciosa e nutritiva, entregue na sua porta.
+                    </p>
+                    <div className="mt-6 flex flex-wrap gap-3">
+                        <BotaoAcao>FAÇA SEU PEDIDO</BotaoAcao>
+                        <BotaoAcao variant="ghost">VEJA O CARDÁPIO</BotaoAcao>
                     </div>
                 </div>
             </div>
-        </>
-    )
-}
 
-export default Principal;
+            {/* Separador de onda */}
+            <svg className="w-full text-white" viewBox="0 0 1440 110" preserveAspectRatio="none" aria-hidden="true">
+                <path fill="currentColor" d="M0,64L48,69.3C96,75,192,85,288,96C384,107,480,117,576,106.7C672,96,768,64,864,48C960,32,1056,32,1152,37.3C1248,43,1344,53,1392,58.7L1440,64L1440,0L1392,0C1344,0,1248,0,1152,0C1056,0,960,0,864,0C768,0,672,0,576,0C480,0,384,0,288,0C192,0,96,0,48,0L0,0Z" />
+            </svg>
+        </section>
+    );
+}

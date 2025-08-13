@@ -1,36 +1,44 @@
+// src/components/sidebar_usuario/SidebarUsuario.tsx
 import { Link } from 'react-router-dom';
-import { useAppContext } from '../../contexts/AuthContext';
+import { House, User, MapPin } from '@phosphor-icons/react';
+// Lembre-se de ajustar o caminho para o seu useAuth, se necessário
+import { useAuthContext } from '../../contexts/AuthContext'; 
 
 function Sidebar() {
-  const { usuario } = useAppContext();
+  const { usuario } = useAuthContext();
 
   return (
-    <aside className="w-64 bg-neutral-800 text-white flex flex-col p-4 shadow-lg">
-      <div className="flex flex-col items-center mb-8">
-        {/*A imagem usa a foto do usuário, com uma imagem padrão de reserva */}
+    // Sidebar com a cor Verde Oliva
+    <aside className="w-64 bg-[#7d8d2a] text-white flex flex-col p-4 rounded-r-2xl shadow-lg">
+      <div className="flex flex-col items-center text-center mb-8 border-b border-white/20 pb-6">
         <img 
-          src={usuario.foto || "https://ik.imagekit.io/pedrolazzz/fitness-teamwork-concept-with-elderly-couple_23-2147776970.jpg?updatedAt=1754920024601 "} 
+          src={usuario.foto || "https://ik.imagekit.io/2zvbvzaqt/usuario.png"} 
           alt="Foto do usuário" 
-          className="w-24 h-24 rounded-full border-4 border-yellow-400 object-cover" 
+          className="w-24 h-24 rounded-full border-4 border-white object-cover" 
         />
-       
-        <h3 className="mt-4 font-bold text-lg">{usuario.nome}</h3>
+        {/* Exibe apenas o primeiro nome do usuário para não quebrar o layout */}
+        <h3 className="mt-4 font-bold text-lg">PERFIL DE {usuario.nome?.split(' ')[0].toUpperCase()}</h3>
       </div>
 
       <nav className="flex flex-col gap-4 text-lg">
-        <Link to="/home" className="px-2 py-1 rounded hover:bg-neutral-700 transition-colors">Home</Link>
-        <Link to="/perfil" className="px-2 py-1 rounded hover:bg-neutral-700 transition-colors">Meu Perfil</Link>
-        <Link to="/categorias" className="px-2 py-1 rounded hover:bg-neutral-700 transition-colors">
-            Meus Treinos
+        <Link to="/home" className="flex items-center gap-3 px-2 py-2 rounded hover:bg-white/20 transition-colors">
+            <House size={24} />
+            Home
+        </Link>
+        {/* O link ativo tem um fundo sutilmente diferente */}
+        <Link to="/perfil" className="flex items-center gap-3 px-2 py-2 rounded hover:bg-white/20 transition-colors bg-white/10 font-bold">
+            <User size={24} />
+            Meu Perfil
+        </Link>
+        <Link to="/enderecos" className="flex items-center gap-3 px-2 py-2 rounded hover:bg-white/20 transition-colors">
+            <MapPin size={24} />
+            Meus Endereços
         </Link>
       </nav>
 
-      <div className="mt-auto flex justify-center p-4">
-        <img 
-            src="https://ik.imagekit.io/pedrolazzz/IMG_2173.PNG?updatedAt=1754693890147"
-            alt="Logo FitHub"
-            className="w-16"
-        />
+      <div className="mt-auto text-center p-4">
+        {/* Logo do DEVLIVERY */}
+        <span className="font-extrabold text-2xl tracking-wide">DEVLIVERY</span>
       </div>
     </aside>
   );

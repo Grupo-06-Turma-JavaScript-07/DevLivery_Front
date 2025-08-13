@@ -1,200 +1,136 @@
-import { ChangeEvent, FormEvent, useState } from 'react';
+// src/pages/login/Login.tsx
+import { useState, type ChangeEvent, type FormEvent } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer, } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { useAppContext } from '../../contexts/AuthContext'; // ajuste o caminho se preciso
+import { useAuthContext } from '../../contexts/AuthContext';
 
-// Se seu handleLogin espera outro shape, ajuste este tipo:
-type Credenciais = {
-  usuario: string; // email/username
-  senha: string;
-};
+
+const Eye = ({ className = '' }) => (<svg viewBox="0 0 24 24" className={className} aria-hidden><path fill="currentColor" d="M12 5c-7 0-10 7-10 7s3 7 10 7 10-7 10-7-3-7-10-7zm0 12a5 5 0 1 1 0-10 5 5 0 0 1 0 10z" /></svg>);
+const EyeOff = ({ className = '' }) => (<svg viewBox="0 0 24 24" className={className} aria-hidden><path fill="currentColor" d="M2 5.27 3.28 4l16.97 16.97-1.27 1.27-3.24-3.24A11.7 11.7 0 0 1 12 19C5 19 2 12 2 12a19.4 19.4 0 0 1 4.2-5.83L2 5.27ZM12 7a5 5 0 0 1 5 5c0 .62-.11 1.21-.31 1.76L13.24 10.3c-.55-.2-1.14-.3-1.76-.3Z" /></svg>);
+type Credenciais = { usuario: string; senha: string; };
 
 export default function Login() {
   const navigate = useNavigate();
-  const { handleLogin, isLoading } = useAppContext();
+  const { handleLogin, isLoading } = useAuthContext();
 
-  const [form, setForm] = useState<Credenciais>({
-    usuario: '',
-    senha: '',
-  });
 
-  function atualizar(e: ChangeEvent<HTMLInputElement>) {
-    setForm(prev => ({ ...prev, [e.target.name]: e.target.value }));
+  const [form, setForm] = useState<Credenciais>({ usuario: '', senha: '' });
+  const [showPass, setShowPass] = useState(false);
+  const [role, setRole] = useState<'user' | 'personal'>('user');
+
+  function onChange(e: ChangeEvent<HTMLInputElement>) {
+    setForm(f => ({ ...f, [e.target.name]: e.target.value }));
   }
 
   async function onSubmit(e: FormEvent) {
     e.preventDefault();
-    if (!form.usuario || !form.senha) {
-      toast.error('Preencha usuário e senha');
-      return;
-    }
+    await handleLogin(form, role);
 
-    try {
-      const ok = await handleLogin(form); // seu contexto deve retornar boolean ou lançar erro
-      if (ok) {
-        toast.success('Login realizado!');
-        // espere um tique para mostrar o toast e navegar
-        setTimeout(() => navigate('/'), 300); // ajuste a rota pós-login
-      } else {
-        toast.error('Usuário ou senha inválidos');
-      }
-    } catch (err: any) {
-      const msg = err?.response?.data?.message ?? 'Falha no login';
-      toast.error(msg);
-    }
   }
 
   return (
-    <div className="min-h-screen bg-[#f0eff2] flex items-center justify-center px-4">
+    <div className="min-h-screen flex bg-[#f0eff2]">
       <ToastContainer position="top-right" autoClose={3000} />
-      <div className="w-full max-w-md">
-        <div className="bg-white rounded-2xl shadow-xl border border-[#ececf0] overflow-hidden">
-          {/* faixa superior com a cor da paleta */}
-          <div className="h-2 bg-[#7d8d2a]" />
 
-          <div className="p-6">
-            <div className="flex items-center gap-2 mb-4">
-              <div className="w-8 h-8 rounded-full bg-[#e7a545] grid place-items-center text-white font-black">K</div>
-              <h1 className="text-xl font-extrabold">Entrar</h1>
-            </div>
+      {/* Coluna da Imagem (Esquerda) */}
+      <aside className="hidden lg:flex w-1/2">
+        <img
+          src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=1160&auto=format&fit=crop"
+          alt="Prato de comida saudável"
+          className="w-full h-full object-cover"
+        />
+      </aside>
 
-            <form onSubmit={onSubmit} className="space-y-4">
-              <div>
-                <label className="text-sm font-medium text-gray-700">E-mail ou usuário</label>
-                <input
-                  type="text"
-                  name="usuario"
-                  value={form.usuario}
-                  onChange={atualizar}
-                  className="mt-1 w-full rounded-xl border border-[#d0d0d5] bg-white px-3 py-2 outline-none focus:ring-2 focus:ring-[#7d8d2a]"
-                  placeholder="seu@email.com"
-                />
+      {/* Coluna do Formulário (Direita) */}
+      <main className="flex-1 grid place-items-center px-4 py-10">
+        <div className="w-full max-w-md">
+          <div className="bg-white rounded-2xl shadow-xl border border-[#ececf0] overflow-hidden">
+            {/* Faixa Verde Adicionada */}
+            <div className="h-2 bg-[#7d8d2a]" />
+
+            <div className="p-8">
+              <div className="flex items-center gap-2 mb-4">
+                <div className="w-8 h-8 rounded-full bg-[#e7a545] grid place-items-center text-white font-black">D</div>
+                <h1 className="text-xl font-extrabold">Entrar na sua Conta</h1>
               </div>
 
-              <div>
-                <label className="text-sm font-medium text-gray-700">Senha</label>
-                <input
-                  type="password"
-                  name="senha"
-                  value={form.senha}
-                  onChange={atualizar}
-                  className="mt-1 w-full rounded-xl border border-[#d0d0d5] bg-white px-3 py-2 outline-none focus:ring-2 focus:ring-[#7d8d2a]"
-                  placeholder="••••••••"
-                />
+              <form onSubmit={onSubmit} className="space-y-5">
+
+                {/* SELETOR DE PERFIL */}
+                <div className="flex justify-center gap-6 py-2">
+                  <label className="flex items-center gap-2 cursor-pointer text-gray-700">
+                    <input
+                      type="radio"
+                      name="role"
+                      value="user"
+                      checked={role === 'user'}
+                      onChange={() => setRole('user')}
+                      className="h-4 w-4 text-[#7d8d2a] focus:ring-[#9cb03b]"
+                    />
+                    Sou Usuário
+                  </label>
+                  <label className="flex items-center gap-2 cursor-pointer text-gray-700">
+                    <input
+                      type="radio"
+                      name="role"
+                      value="personal"
+                      checked={role === 'personal'}
+                      onChange={() => setRole('personal')}
+                      className="h-4 w-4 text-[#7d8d2a] focus:ring-[#9cb03b]"
+                    />
+                    Sou Fornecedor
+                  </label>
+                </div>
+                <div>
+                  <label className="text-sm font-medium text-gray-700" htmlFor="usuario">E-mail</label>
+                  <input
+                    id="usuario" name="usuario" value={form.usuario} onChange={onChange}
+                    className="mt-1 w-full rounded-xl border border-gray-300 bg-white px-3 py-2 outline-none focus:ring-2 focus:ring-[#7d8d2a]"
+                    placeholder="voce@exemplo.com" required
+                  />
+                </div>
+
+                <div>
+                  <label className="text-sm font-medium text-gray-700" htmlFor="senha">Senha</label>
+                  <div className="mt-1 relative">
+                    <input
+                      id="senha" type={showPass ? 'text' : 'password'} name="senha"
+                      value={form.senha} onChange={onChange}
+                      className="w-full rounded-xl border border-gray-300 bg-white px-3 py-2 pr-10 outline-none focus:ring-2 focus:ring-[#7d8d2a]"
+                      placeholder="••••••••" required
+                    />
+                    <button type="button" onClick={() => setShowPass(s => !s)}
+                      className="absolute right-2.5 top-1/2 -translate-y-1/2 p-1 rounded-full hover:bg-gray-100"
+                      aria-label={showPass ? 'Ocultar senha' : 'Mostrar senha'}
+                    >
+                      {showPass ? <EyeOff className="w-5 h-5 text-gray-500" /> : <Eye className="w-5 h-5 text-gray-500" />}
+                    </button>
+                  </div>
+                </div>
+
+                <button type="submit" disabled={isLoading}
+                  className="w-full rounded-xl bg-[#7d8d2a] text-white font-semibold py-2.5 shadow-sm hover:bg-[#6a7a24] disabled:opacity-60 transition-colors"
+                >
+                  {isLoading ? 'Entrando...' : 'Entrar'}
+                </button>
+              </form>
+
+              <div className="mt-6 text-sm text-center text-gray-600">
+                Não tem conta?{' '}
+                <Link to="/cadastro" className="font-semibold text-[#e7a545] hover:underline">
+                  Cadastre-se
+                </Link>
               </div>
-
-              <button
-                type="submit"
-                disabled={isLoading}
-                className="w-full rounded-xl bg-[#7d8d2a] text-white font-semibold py-2 hover:brightness-110 disabled:opacity-60"
-              >
-                {isLoading ? 'Entrando...' : 'Entrar'}
-              </button>
-            </form>
-
-            <div className="mt-4 text-sm text-center text-gray-600">
-              Não tem conta?{' '}
-              <Link to="/cadastro" className="font-semibold text-[#e7a545] hover:underline">
-                Cadastre-se
-              </Link>
             </div>
           </div>
-        </div>
 
-        <div className="text-center mt-4">
-          <Link to="/" className="text-sm text-gray-600 hover:underline">← Voltar para a Home</Link>
+          {/* Link "Voltar para Home" Adicionado */}
+          <div className="text-center mt-6">
+            <Link to="/" className="text-sm text-gray-600 hover:underline">← Voltar para a Home</Link>
+          </div>
         </div>
-      </div>
+      </main>
     </div>
   );
 }
-
-
-
-
-
-
-
-
-
-// src/pages/login/Login.tsx
-// import { type ChangeEvent, type FormEvent, useState } from 'react';
-// import { RotatingLines } from 'react-loader-spinner';
-// import { Link } from 'react-router-dom';
-// import type UsuarioLogin from '../../models/UsuarioLogin';
-// import './Login.css';
-// import { useAppContext } from '../../contexts/AuthContext';
-
-// function Login() {
-//     const { handleLogin, isLoading } = useAppContext();
-//     const [usuarioLogin, setUsuarioLogin] = useState<UsuarioLogin>({
-//     id: 0,
-//     nome: '',
-//     usuario: '',
-//     senha: '',
-//     foto: '',
-//     token: ''
-// });
-//     // Estado para guardar a seleção de perfil
-//     const [role, setRole] = useState<'user' | 'personal'>('user'); 
-
-//     function atualizarEstado(e: ChangeEvent<HTMLInputElement>) {
-//         setUsuarioLogin({
-//             ...usuarioLogin,
-//             [e.target.name]: e.target.value,
-//         });
-//     }
-
-//     function login(e: FormEvent<HTMLFormElement>) {
-//         e.preventDefault();
-       
-//         handleLogin(usuarioLogin, role); 
-//     }
-
-//     return (
-//         <div className="grid grid-cols-1 lg:grid-cols-2 h-screen place-items-center font-bold">
-//             <form className="flex justify-center items-center flex-col w-1/1.5 gap-4 pl-30" onSubmit={login}>
-//                 <h2 className="text-slate-900 text-5xl">Faça seu Login</h2>
-                
-//                 {/* SELEÇÃO DE PERFIL */}
-//                 <div className="flex gap-6 my-4">
-//                     <label className="flex items-center gap-2 cursor-pointer">
-//                         <input type="radio" name="role" value="user" checked={role === 'user'} onChange={() => setRole('user')} className="h-5 w-5"/>
-//                         Sou Cliente
-//                     </label>
-//                     <label className="flex items-center gap-2 cursor-pointer">
-//                         <input type="radio" name="role" value="personal" checked={role === 'personal'} onChange={() => setRole('personal')} className="h-5 w-5"/>
-//                         Sou Vendedor
-//                     </label>
-//                 </div>
-
-//                 <div className="flex flex-col w-full">
-//                     <label htmlFor="usuario">Email (usuário)</label>
-//                     <input type="email" id="usuario" name="usuario" placeholder="exemplo@email.com"
-//                         className="border-2 border-slate-700 rounded p-2"
-//                         value={usuarioLogin.usuario} onChange={atualizarEstado} required
-//                     />
-//                 </div>
-//                 <div className="flex flex-col w-full">
-//                     <label htmlFor="senha">Senha</label>
-//                     <input type="password" id="senha" name="senha" placeholder="Sua senha"
-//                         className="border-2 border-slate-700 rounded p-2"
-//                         value={usuarioLogin.senha} onChange={atualizarEstado} required
-//                     />
-//                 </div>
-//                 <button type="submit"
-//                     className="rounded bg-yellow-400 flex justify-center hover:bg-yellow-500 text-black w-1/2 py-2">
-//                     {isLoading ? <RotatingLines strokeColor="white" strokeWidth="5" width="24" /> : <span>Entrar</span>}
-//                 </button>
-//                 <hr className="border-slate-800 w-full" />
-//                 <p>Ainda não tem uma conta? <Link to="/cadastro" className="text-yellow-400 hover:underline">Cadastre-se</Link></p>
-//             </form>
-//             <div className="fundoLogin hidden lg:block"></div>
-//         </div>
-//     );
-// }
-
-// export default Login;
-
-
