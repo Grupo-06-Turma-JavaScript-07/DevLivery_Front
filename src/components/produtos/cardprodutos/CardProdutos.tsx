@@ -27,15 +27,16 @@ export default function CardProduto({ title, variantColor, image, price, old, ta
         <SeloDePreco price={price} old={old} className="bg-[#7d8d2a]" />
       </div>
 
-      <div className="space-y-2 pt-2">
-        <div className="text-sm tracking-wide uppercase opacity-90">{tag}</div>
-        <h3 className="text-2xl font-extrabold text-white drop-shadow-[0_1px_0_rgba(0,0,0,0.15)]">{title}</h3>
-        <Avaliacao />
-        <p className="text-sm text-[#2b2b2b] opacity-90">
-          Uma combinação deliciosa e saudável de ingredientes frescos e selecionados.
-        </p>
-        <BotaoAcao className="mt-2">ADICIONAR</BotaoAcao>
-      </div>
-    </div>
-  );
+
+            <div className="space-y-2 pt-2">
+                <div className="text-sm tracking-wide uppercase opacity-90">{tag}</div>
+                <h3 className="text-2xl font-extrabold text-white drop-shadow-[0_1px_0_rgba(0,0,0,0.15)]">{title}</h3>
+                <p className="text-sm text-[#2b2b2b] opacity-90">
+                    Uma combinação deliciosa e saudável de ingredientes frescos e selecionados.
+                </p>
+                <BotaoAcao className="mt-2">ADICIONAR</BotaoAcao>
+            </div>
+        </div>
+    );
+
 }

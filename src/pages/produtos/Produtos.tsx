@@ -21,7 +21,7 @@ const produtosExemplo = [
     {
         title: "Bowl de Açaí",
         tag: "com Frutas",
-        image: "https://images.unsplash.com/photo-1590301429285-05b65a3503f9?q=80&w=600&auto=format&fit=crop",
+        image: "https://ik.imagekit.io/pedrolazzz/a%C3%A7ai-crop.png?updatedAt=1755023669920",
         price: 25,
         old: 30,
         variantColor: "bg-[#7d8d2a]", // Verde Oliva

@@ -129,6 +129,7 @@ export default function Cadastro() {
               <Link to="/login" className="font-semibold text-[#e7a545] hover:underline">
                 Entrar
               </Link>
+
             </div>
           </div>
         </div>
@@ -137,5 +138,5 @@ export default function Cadastro() {
         </div>
       </div>
     </div>
-  );
+  )
 }

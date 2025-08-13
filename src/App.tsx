@@ -36,8 +36,10 @@ function App() {
               <Route path="/login" element={<Login />} />
               <Route path="/cadastro" element={<Cadastro />} />
 
+
               {/* --- Rotas do Usuário Comum --- */}
               <Route path="/home" element={<Home />} />
+
               <Route path="/perfil" element={<Perfil />} />
               <Route path="/categorias" element={<CategoriasUsuario />} />
               {/* <Route path="/produtos/categoria/:id" element={<ProdutosUsuario />} /> */}
