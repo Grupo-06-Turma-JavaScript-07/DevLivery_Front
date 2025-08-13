@@ -25,7 +25,6 @@ function App() {
               <Route path="/home" element={<Home />} />
               <Route path="/cadastro" element={<Cadastro />} />
               <Route path="/login" element={<Login />} /> 
-
               <Route path="/perfil" element={<Perfil />} />
               
               

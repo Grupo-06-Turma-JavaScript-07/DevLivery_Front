@@ -127,7 +127,7 @@ export default function Login() {
 
           {/* Link "Voltar para Home" Adicionado */}
           <div className="text-center mt-6">
-            <Link to="/" className="text-sm text-gray-600 hover:underline">← Voltar para a Home</Link>
+            <Link to="/home" className="text-sm text-gray-600 hover:underline">← Voltar para a Home</Link>
           </div>
         </div>
       </main>

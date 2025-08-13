@@ -122,7 +122,7 @@ export default function Cadastro() {
                 </div>
             </div>
             <div className="text-center mt-6">
-                <Link to="/" className="text-sm text-white/80 hover:underline">← Voltar para a Home</Link>
+                <Link to="/home" className="text-sm text-white/80 hover:underline">← Voltar para a Home</Link>
             </div>
         </div>
     </div>
