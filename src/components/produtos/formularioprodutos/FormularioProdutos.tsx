@@ -83,7 +83,7 @@ function FormularioProduto() {
     return (
         <div className="flex items-center justify-center bg-neutral-900 text-white p-8 min-h-[85vh]">
             <form className="bg-neutral-800 p-8 rounded-lg w-full max-w-2xl" onSubmit={gerarNovoProduto}>
-                <h1 className="text-4xl font-bold text-yellow-400 font-anton mb-8 text-center">{id ? 'Editar Produto' : 'Cadastrar Produto'}</h1>
+                <h1 className="text-4xl font-bold text-[#7d8d2a] font-anton mb-8 text-center">{id ? 'Editar Produto' : 'Cadastrar Produto'}</h1>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                     <div>
@@ -125,7 +125,7 @@ function FormularioProduto() {
 
                 <div className="flex justify-end gap-4">
                     <button type="button" onClick={retornar} className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded">Cancelar</button>
-                    <button type="submit" className="bg-yellow-400 hover:bg-yellow-500 text-black font-bold py-2 px-4 rounded">{id ? 'Salvar' : 'Cadastrar'}</button>
+                    <button type="submit" className="bg-[#7d8d2a] hover:bg-[#7d8d2a] text-black font-bold py-2 px-4 rounded">{id ? 'Salvar' : 'Cadastrar'}</button>
                 </div>
             </form>
         </div>

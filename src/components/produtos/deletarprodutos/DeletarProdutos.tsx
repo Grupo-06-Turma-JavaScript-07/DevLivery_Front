@@ -1,4 +1,3 @@
-// src/components/produtos/deletarprodutos/DeletarProduto.tsx
 import { useNavigate, useParams } from 'react-router-dom';
 import { ToastAlerta } from '../../../utils/ToastAlerta';
 import { useEffect, useState } from 'react';
@@ -47,7 +46,7 @@ function DeletarProdutos() {
             <div className="bg-neutral-800 p-8 rounded-lg text-center w-full max-w-md">
                 <h1 className="text-2xl font-bold mb-4">Tem certeza que deseja deletar o produto?</h1>
                 {/* Exibe o nome do produto que foi buscada da API */}
-                <p className="text-4xl font-bold text-yellow-400 font-anton mb-8">
+                <p className="text-4xl font-bold text-[#7d8d2a] font-anton mb-8">
                     {produto.name}
                 </p>
                 <div className="flex justify-center gap-4">

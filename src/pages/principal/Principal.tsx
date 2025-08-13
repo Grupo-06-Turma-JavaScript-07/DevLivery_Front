@@ -1,4 +1,5 @@
 // src/pages/principal/Principal.tsx
+
 import BotaoAcao from '../../components/botaoacao/BotaoAcao';
 
 export default function Principal() {
@@ -29,6 +30,24 @@ export default function Principal() {
                     </div>
                 </div>
             </div>
+          </div>
+        </div>
+
+        {/* Texto */}
+        <div className="order-1 lg:order-2">
+          <p className="text-xl italic text-[#6b6b6b]">Saudável & Saboroso</p>
+          <h1 className="text-5xl md:text-6xl font-black leading-tight">Delivery Saudável</h1>
+          <div className="mt-2"><Avaliacao /></div>
+          <p className="mt-4 text-[#4b4b4b] max-w-xl">
+            Ingredientes frescos e selecionados, preparados com cuidado para uma refeição deliciosa e nutritiva, entregue na sua porta.
+          </p>
+          <div className="mt-6 flex flex-wrap gap-3">
+            <BotaoAcao>FAÇA SEU PEDIDO</BotaoAcao>
+            <BotaoAcao variant="ghost">VEJA O CARDÁPIO</BotaoAcao>
+          </div>
+        </div>
+      </div>
+
 
             {/* Separador de onda */}
             <svg className="w-full text-white rotate-180" viewBox="0 0 1440 110" preserveAspectRatio="none" aria-hidden="true">
@@ -36,4 +55,5 @@ export default function Principal() {
             </svg>
         </section>
     );
+
 }
