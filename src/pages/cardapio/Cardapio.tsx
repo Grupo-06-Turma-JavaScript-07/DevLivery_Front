@@ -1,14 +1,15 @@
 // src/pages/cardapio/Cardapio.tsx
-
 import { useEffect, useState } from 'react';
-import type Produtos from '../../models/Produtos';
-import type Categoria from '../../models/Categoria';
-import { ToastAlerta } from '../../utils/ToastAlerta';
-import { buscar, } from '../../service/Service';
 import { useAuthContext } from '../../contexts/AuthContext';
-import CardProdutos from '../../components/produtos/cardprodutos/CardProdutos';
+import { buscar } from '../../service/Service';
+
+import type Categoria from '../../models/Categoria';
+import type Produtos from '../../models/Produtos';
+
+import { ToastAlerta } from '../../utils/ToastAlerta';
+import { MagnifyingGlass, Sparkle } from '@phosphor-icons/react';
 import { DNA } from 'react-loader-spinner';
-import { MagnifyingGlass } from '@phosphor-icons/react';
+import CardProdutos from '../../components/produtos/cardprodutos/CardProdutos';
 
 function Cardapio() {
     const { usuario } = useAuthContext();
@@ -19,151 +20,111 @@ function Cardapio() {
     const [loading, setLoading] = useState(true);
     const [busca, setBusca] = useState('');
     const [modoRecomendacao, setModoRecomendacao] = useState(false);
+    const [categoriaSelecionada, setCategoriaSelecionada] = useState<number | null>(null);
 
-    const headers = { Authorization: token };
-
-    async function buscarTodosProdutos() {
+    // Função unificada para buscar os dados
+    async function fetchData() {
         setLoading(true);
+        let endpointProdutos = '/Product'; // Endpoint padrão
+
+        if (modoRecomendacao) {
+            endpointProdutos = '/Product/recomendados'; // Endpoint para recomendações
+        }
+
         try {
-            await buscar('/Product', setProdutos, { headers });
+            await Promise.all([
+                buscar(endpointProdutos, setProdutos, { headers: { Authorization: token } }),
+                buscar('/Category', setCategorias, { headers: { Authorization: token } })
+            ]);
         } catch (error: any) {
-            ToastAlerta('Erro ao carregar os produtos.', 'erro');
+            ToastAlerta('Erro ao carregar o cardápio.', 'erro');
         } finally {
             setLoading(false);
         }
     }
 
-    async function buscarProdutosPorNome(nome: string) {
-        setLoading(true);
-        try {
-            await buscar(`/Product/nameProduct/${nome}`, setProdutos, { headers });
-        } catch (error: any) {
-            ToastAlerta('Erro ao buscar produtos.', 'erro');
-            setProdutos([]);
-        } finally {
-            setLoading(false);
-        }
-    }
-
-    async function buscarCategorias() {
-        try {
-            await buscar('/Category', setCategorias, { headers });
-        } catch (error: any) {
-            ToastAlerta('Erro ao carregar as categorias.', 'erro');
-        }
-    }
-
-    async function buscarProdutosRecomendados() {
-        setLoading(true);
-        try {
-            // AQUI: A chamada para a rota de recomendados deve ser ajustada
-            // para o Service.ts
-            await buscar('/Product/recomendados/saudavel,fit,natural,integral,sem-acucar', setProdutos, { headers });
-        } catch (error: any) {
-            ToastAlerta('Erro ao carregar as recomendações.', 'erro');
-            setProdutos([]);
-        } finally {
-            setLoading(false);
-        }
-    }
-
+    // Efeito para buscar os dados quando o token ou o modo de recomendação mudam
     useEffect(() => {
         if (token) {
-            buscarCategorias();
-            if (modoRecomendacao) {
-                buscarProdutosRecomendados();
-            } else {
-                buscarTodosProdutos();
-            }
+            fetchData();
         }
     }, [token, modoRecomendacao]);
 
-    useEffect(() => {
-        if (busca.length > 0) {
-            setModoRecomendacao(false);
-            buscarProdutosPorNome(busca);
-        } else {
-            if (!modoRecomendacao) {
-                buscarTodosProdutos();
-            }
-        }
-    }, [busca]);
-
+    // Lógica de filtragem e busca
+    const produtosFiltrados = produtos
+        .filter(produto => 
+            categoriaSelecionada ? produto.category?.id === categoriaSelecionada : true
+        )
+        .filter(produto => 
+            produto.nameProduct.toLowerCase().includes(busca.toLowerCase())
+        );
 
     return (
-        <div className="bg-[#f1f1f3] min-h-screen flex">
-            <aside className="w-64 bg-white p-6 shadow-lg rounded-tr-3xl hidden md:block">
+        <div className="bg-[#f0eff2] min-h-screen flex flex-col md:flex-row">
+            {/* Sidebar de Categorias */}
+            <aside className="w-full md:w-72 bg-white p-6 shadow-lg md:rounded-tr-3xl">
+                {/* Botão de Recomendações RESTAURADO */}
                 <button
-                    onClick={() => {
-                        setModoRecomendacao(!modoRecomendacao);
-                        setBusca('');
-                    }}
-                    className={`w-full p-3 rounded-lg font-bold transition-colors mb-6 ${
+                    onClick={() => setModoRecomendacao(!modoRecomendacao)}
+                    className={`w-full p-3 rounded-lg font-bold transition-all duration-300 flex items-center justify-center gap-2 mb-6 ${
                         modoRecomendacao
                             ? 'bg-red-500 text-white hover:bg-red-600'
                             : 'bg-[#7d8d2a] text-white hover:bg-[#6b7b25]'
                     }`}
                 >
-                    {modoRecomendacao ? 'Ver todos os produtos' : 'Minhas Recomendações'}
+                    <Sparkle size={20} />
+                    {modoRecomendacao ? 'Ver Todos os Produtos' : 'Minhas Recomendações'}
                 </button>
 
-                <h2 className="text-2xl font-bold text-[#7d8d2a] mb-6">Categorias</h2>
-                <nav className="space-y-4">
+                <h2 className="text-2xl font-bold text-[#7d8d2a] mb-4">Categorias</h2>
+                <nav className="space-y-2">
+                    <div 
+                        onClick={() => setCategoriaSelecionada(null)}
+                        className={`p-2 rounded-lg font-semibold transition-colors cursor-pointer ${!categoriaSelecionada ? 'bg-[#e7a545] text-white' : 'hover:bg-gray-100'}`}
+                    >
+                        Todas
+                    </div>
                     {categorias.map(categoria => (
-                        <div key={categoria.id} className="flex items-center gap-3 text-lg text-gray-700 hover:text-[#7d8d2a] transition-colors cursor-pointer">
-                            <span className="w-3 h-3 rounded-full bg-gray-400"></span>
-                            <span>{categoria.categoria}</span>
+                        <div 
+                            key={categoria.id}
+                            onClick={() => setCategoriaSelecionada(categoria.id)}
+                            className={`p-2 rounded-lg font-semibold transition-colors cursor-pointer ${categoriaSelecionada === categoria.id ? 'bg-[#e7a545] text-white' : 'hover:bg-gray-100'}`}
+                        >
+                            {categoria.categoria}
                         </div>
                     ))}
                 </nav>
             </aside>
 
+            {/* Conteúdo Principal */}
             <main className="flex-1 p-8">
-                <h1 className="text-4xl font-extrabold text-gray-800 mb-8">
+                <h1 className="text-4xl font-extrabold text-gray-800 mb-4">
                     Conheça nosso cardápio
                 </h1>
-
-                <div className="flex items-center gap-2 mb-8">
+                <p className="text-gray-500 mb-8">Ingredientes frescos, pratos deliciosos e saudáveis entregues para você.</p>
+                <div className="relative mb-8">
                     <input
                         type="text"
-                        placeholder="Buscar produtos..."
+                        placeholder="Buscar por nome do prato..."
                         value={busca}
                         onChange={(e) => setBusca(e.target.value)}
-                        className="flex-1 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#7d8d2a]"
+                        className="w-full p-4 pl-12 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#7d8d2a]"
                     />
-                    <button onClick={() => {}} className="bg-[#7d8d2a] text-white p-3 rounded-lg hover:bg-[#6b7b25] transition-colors">
-                        <MagnifyingGlass size={24} />
-                    </button>
+                    <MagnifyingGlass size={24} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
                 </div>
-
                 {loading ? (
                     <div className="flex justify-center mt-20">
-                        <DNA visible={true} height="200" width="200" ariaLabel="dna-loading" wrapperClass="dna-wrapper" />
+                        <DNA visible={true} height="200" width="200" ariaLabel="dna-loading" />
                     </div>
                 ) : (
-                    <div>
-                        {categorias.map(categoria => {
-                            const produtosDaCategoria = produtos.filter(p => p.category?.id === categoria.id);
-                            if (produtosDaCategoria.length > 0) {
-                                return (
-                                    <div key={categoria.id} className="mb-10">
-                                        <h2 className="text-3xl font-extrabold text-gray-700 mb-6 border-b-2 border-gray-200 pb-2">
-                                            {categoria.categoria}
-                                        </h2>
-                                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
-                                            {produtosDaCategoria.map(produto => (
-                                                <CardProdutos key={produto.id} produto={produto} />
-                                            ))}
-                                        </div>
-                                    </div>
-                                );
-                            }
-                            return null;
-                        })}
-                        {produtos.length === 0 && !loading && (
-                            <p className="text-center text-gray-500 italic mt-10">Nenhum produto encontrado para sua busca.</p>
-                        )}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                        {produtosFiltrados.map(produto => (
+                            <CardProdutos key={produto.id} produto={produto} />
+                        ))}
                     </div>
+                )}
+                {produtosFiltrados.length === 0 && !loading && (
+                    <p className="text-center text-gray-500 italic mt-10">Nenhum produto encontrado.</p>
                 )}
             </main>
         </div>
