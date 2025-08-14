@@ -16,7 +16,7 @@ function CardCategoria({ categoria }: CardCategoriaProps) {
         transition-all duration-300 ease-in-out cursor-pointer
         font-anton
       ">
-        {categoria.category}
+        {categoria.categoria}
       </div>
     </Link>
   );

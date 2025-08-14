@@ -1,80 +1,71 @@
-// src/components/produtos/listarprodutos/ListarProdutos.tsx
+// src/pages/principal/ListarProdutos.tsx
+
 import { useEffect, useState } from 'react';
-import { Link } from "react-router-dom";
-import { Pencil, Trash } from "@phosphor-icons/react";
 import type Produtos from '../../../models/Produtos';
 import { ToastAlerta } from '../../../utils/ToastAlerta';
 import { buscar } from '../../../service/Service';
+import { useNavigate } from 'react-router-dom';
+import CardProdutos from '../cardprodutos/CardProdutos';
+import { DNA } from 'react-loader-spinner';
+import { useAuthContext } from '../../../contexts/AuthContext';
 
-function ListarProdutos() {
-    // Estado para armazenar a lista de produtos que virá da API
+export default function ListarProdutos() {
+    const navigate = useNavigate();
     const [produtos, setProdutos] = useState<Produtos[]>([]);
+    const { usuario, handleLogout } = useAuthContext();
+    const token = usuario.token;
 
     // Função para buscar os produtos no back-end
     async function buscarProdutos() {
         try {
-            await buscar('/product', setProdutos, {}); // Usando o endpoint "/product" do seu back-end
+            await buscar('/Product', setProdutos, {
+                headers: {
+                    Authorization: token,
+                },
+            });
         } catch (error: any) {
-            ToastAlerta('Erro ao buscar os produtos.', 'erro');
+            if (error.toString().includes('403')) {
+                handleLogout();
+                ToastAlerta('Sessão expirada, faça o login novamente.', 'erro');
+            }
         }
     }
 
-    // O useEffect chama a função de busca assim que o componente é renderizado
+    // Hook que checa o token ao renderizar o componente
+    useEffect(() => {
+        if (token === undefined || token === '') {
+            ToastAlerta('Você precisa estar logado', 'erro');
+            navigate('/login');
+        }
+    }, [token]);
+
+    // Hook que chama a função de busca assim que o componente é montado
     useEffect(() => {
         buscarProdutos();
-    }, []);
+    }, [produtos.length]); // Chama a busca sempre que a lista de produtos mudar de tamanho
 
     return (
-        <div className="flex bg-neutral-900 text-white min-h-[85vh]">
-            <SidebarPersonal />
-            <main className="flex-1 p-8">
-                <div className="flex justify-between items-center mb-8">
-                    <h1 className="text-4xl font-bold text-yellow-400 font-anton">
-                        GERENCIAR EXERCÍCIOS
-                    </h1>
-                    <Link 
-                        to="/cadastrarproduto" 
-                        className="bg-yellow-400 text-black font-bold py-2 px-4 rounded hover:bg-yellow-500 transition-colors"
+        <>
+            {produtos.length === 0 && (
+                <DNA
+                    visible={true}
+                    height="100"
+                    width="100"
+                    ariaLabel="dna-loading"
+                    wrapperClass="dna-wrapper mx-auto"
+                />
+            )}
+            <div className="flex justify-center w-full my-4">
+                <div className="container flex flex-col mx-1">
+                    <div className="container mx-auto my-4 
+                         grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4"
                     >
-                        Cadastrar Novo Exercício
-                    </Link>
+                        {produtos.map((produto) => (
+                            <CardProdutos key={produto.id} produto={produto} />
+                        ))}
+                    </div>
                 </div>
-
-                <div className="bg-neutral-800 rounded-lg overflow-hidden">
-                    <table className="w-full text-left">
-                        <thead className="bg-neutral-700 text-amber-100 uppercase">
-                            <tr>
-                                <th className="p-4">Produto</th>
-                                <th className="p-4">Categoria</th>
-                                <th className="p-4 text-center">Ações</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {/* Agora o .map usa os dados do estado 'produtos', que vêm da API */}
-                            {produtos.map(produto => (
-                                <tr key={produto.id} className="border-b border-neutral-700 hover:bg-neutral-700/50">
-                                    {/* Usamos as propriedades do nosso modelo: produto.name e produto.category */}
-                                    <td className="p-4">{produto.name}</td>
-                                    {/* Usamos "?." para acessar o nome da categoria de forma segura */}
-                                    <td className="p-4">{produto.category?.category}</td>
-                                    <td className="p-4">
-                                        <div className="flex justify-center gap-4">
-                                            <Link to={`/editarproduto/${produto.id}`} className="text-blue-400 hover:text-blue-300">
-                                                <Pencil size={24} />
-                                            </Link>
-                                            <Link to={`/deletarproduto/${produto.id}`} className="text-red-500 hover:text-red-400">
-                                                <Trash size={24} />
-                                            </Link>
-                                        </div>
-                                    </td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                </div>
-            </main>
-        </div>
+            </div>
+        </>
     );
 }
-
-export default ListarProdutos;

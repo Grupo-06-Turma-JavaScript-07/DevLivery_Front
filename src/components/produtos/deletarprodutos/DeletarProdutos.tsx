@@ -47,7 +47,7 @@ function DeletarProdutos() {
                 <h1 className="text-2xl font-bold mb-4">Tem certeza que deseja deletar o produto?</h1>
                 {/* Exibe o nome do produto que foi buscada da API */}
                 <p className="text-4xl font-bold text-[#7d8d2a] font-anton mb-8">
-                    {produto.name}
+                    {produto.nameProduct}
                 </p>
                 <div className="flex justify-center gap-4">
                     <button onClick={retornar}

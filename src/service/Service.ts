@@ -1,6 +1,7 @@
 
 import axios from "axios";
 import type Usuario from "../models/Usuario";
+import type Produtos from "../models/Produtos";
 
 
 const api = axios.create({
@@ -51,3 +52,23 @@ export const atualizar = async (url: string, dados: Object, setDados: Function, 
 export const deletar = async (url: string, headers: Object) => {
     await api.delete(url, headers);
 }
+
+// export const buscarRecomendados = async (setDados: (produtos: Produtos[]) => void) => {
+//     const termosBusca = ['saudavel', 'fit', 'natural', 'integral', 'sem-acucar'];
+//     const termosFormatados = termosBusca.join(','); // Cria uma string "saudavel,fit,natural,..."
+//     const resposta = await api.get(`/Product/recomendados/${termosFormatados}`);
+//     setDados(resposta.data);
+// }
+
+export const buscarRecomendados = async (setDados: (produtos: Produtos[]) => void) => {
+  try {
+    const termosBusca = ['saudavel', 'fit', 'natural', 'integral', 'sem-acucar'];
+    const termosFormatados = termosBusca.join(',');
+    const resposta = await api.get(`/Product/recomendados/${termosFormatados}`);
+    setDados(resposta.data);
+  } catch (error: any) {
+    console.error("Erro na busca de recomendações:", error);
+    setDados([]);
+    throw error;
+  }
+};

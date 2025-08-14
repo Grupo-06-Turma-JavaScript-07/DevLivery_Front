@@ -4,7 +4,7 @@ import { Link as ScrollLink } from "react-scroll";
 // Lembre-se de ajustar o caminho para o seu AppContext, se necessário
 import { useAuthContext } from "../../contexts/AuthContext";
 
-function Navbar() {
+function NavbarUsuarios() {
   const { usuario, handleLogout, userRole } = useAuthContext();
 
   // Lógica para decidir quais links serão exibidos
@@ -30,8 +30,8 @@ function Navbar() {
 
       {/* Links de rolagem para as seções da página principal */}
       <li>
-        <ScrollLink to='produtos' spy={true} smooth={true} offset={-70} duration={500} className="hover:text-[#7d8d2a] cursor-pointer">
-          Produtos
+        <ScrollLink to='cardapio' spy={true} smooth={true} offset={-70} duration={500} className="hover:text-[#7d8d2a] cursor-pointer">
+          Cardápio
         </ScrollLink>
       </li>
       <li>
@@ -52,7 +52,7 @@ function Navbar() {
       <div className="container mx-auto flex justify-between items-center px-4 py-2">
         <RouterLink to="/home" className="flex items-center gap-2">
           {/* Logo do DEVLIVERY */}
-          <img className="w-12 h-9" src="https://ik.imagekit.io/pedrolazzz/Co%CC%81pia-de-HUBfitHUB-1.png?updatedAt=1755131403313"
+          <img className="w-12 h-12" src="https://ik.imagekit.io/qvv2cbqgy/Cópia%20de%20HUBfitHUB%20-%201.PNG?updatedAt=1755129903323"
             alt="Logo" />
 
 
@@ -66,4 +66,4 @@ function Navbar() {
   );
 }
 
-export default Navbar;
+export default NavbarUsuarios;

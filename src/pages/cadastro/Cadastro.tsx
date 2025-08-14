@@ -16,6 +16,7 @@ export default function Cadastro() {
 
 
   const [form, setForm] = useState<Usuario>({
+    token: '',
     id: 0,
     nome: '',
     usuario: '',
@@ -46,7 +47,7 @@ export default function Cadastro() {
         toast.success('Cadastro realizado com sucesso!');
         // Chama a função do contexto para fazer o auto-login
         handleCadastro(usuarioCadastrado, 'user');
-        
+
       });
     } catch (err: any) {
       const msg = err?.response?.data?.message ?? 'Não foi possível concluir o cadastro.';
@@ -58,11 +59,9 @@ export default function Cadastro() {
 
   return (
     <div className="min-h-screen bg-cover bg-center flex items-center justify-center px-4"
-      style={{ backgroundImage: "url('https://images.unsplash.com/photo-1512621776951-a57141f2eefd?q=80&w=1740&auto=format&fit=crop')" }}>
+      style={{ backgroundImage: "url('https://i.imgur.com/VprK98h.png')" }}>
 
       <ToastContainer position="top-right" autoClose={3000} />
-
-      <div className="absolute inset-0 bg-black/50 backdrop-blur-sm"></div>
 
       <div className="relative w-full max-w-lg z-10">
         <div className="bg-white/80 backdrop-blur-md rounded-2xl shadow-xl border border-white/20 overflow-hidden">

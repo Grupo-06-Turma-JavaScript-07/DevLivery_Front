@@ -48,7 +48,7 @@ function CategoriasUsuario() {
 
             {Array.isArray(categorias) && categorias.map((categoria) => (
               <li key={categoria.id} className="text-amber-100 hover:text-yellow-400 cursor-pointer">
-                <Link to={`/produtos/categoria/${categoria.id}`}>{categoria.category}</Link>
+                <Link to={`/produtos/categoria/${categoria.id}`}>{categoria.categoria}</Link>
               </li>
             ))}
           </ul>

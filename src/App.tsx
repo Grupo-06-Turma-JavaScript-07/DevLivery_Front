@@ -13,11 +13,12 @@ import DetalheProdutos from "./components/produtos/detalheprodutos/DetalheProdut
 import ListarCategorias from "./components/categoria/listacategorias/ListaCategorias";
 import FormularioCategoria from "./components/categoria/formulariocategoria/Formulariocategoria";
 import DeletarCategoria from "./components/categoria/deletarcategoria/DeletarCategoria";
-import ListarProdutos from "./components/produtos/listarprodutos/ListarProdutos";
 import FormularioProduto from "./components/produtos/formularioprodutos/FormularioProdutos";
 import DeletarProdutos from "./components/produtos/deletarprodutos/DeletarProdutos";
-
-
+// import CardRecomendados from "./components/produtos/cardprodutos/CardRecomendados";
+import Produtos from "./pages/produtos/Produtos";
+import GerenciarProduto from "./components/produtos/gerenciarprodutos/GerenciarProduto";
+import Cardapio from "./pages/cardapio/Cardapio";
 
 
 function App() {
@@ -30,7 +31,7 @@ function App() {
           <Navbar />
           <div className="min-h-[80vh]">
             <Routes>
-             
+
               {/* --- Rotas Públicas e de Autenticação --- */}
               <Route path="/" element={<Login />} />
               <Route path="/login" element={<Login />} />
@@ -44,10 +45,10 @@ function App() {
               <Route path="/categorias" element={<CategoriasUsuario />} />
               {/* <Route path="/produtos/categoria/:id" element={<ProdutosUsuario />} /> */}
               <Route path="/produtos/:id" element={<DetalheProdutos />} />
-              
+
               {/* --- Rotas do Personal Trainer (Gerenciamento) --- */}
               <Route path="/perfilfornecedor" element={<PerfilFornecedor />} />
-              
+
               {/* Gerenciamento de Categorias */}
               <Route path="/categorias/gerenciar" element={<ListarCategorias />} />
               <Route path="/cadastrarcategoria" element={<FormularioCategoria />} />
@@ -55,12 +56,14 @@ function App() {
               <Route path="/deletarcategoria/:id" element={<DeletarCategoria />} />
 
               {/* Gerenciamento de Produtos */}
-              <Route path="/produtos/gerenciar" element={<ListarProdutos />} />
+              <Route path="/produtos/gerenciar" element={<GerenciarProduto />} />
               <Route path="/cadastrarproduto" element={<FormularioProduto />} />
               <Route path="/editarproduto/:id" element={<FormularioProduto />} />
               <Route path="/deletarproduto/:id" element={<DeletarProdutos />} />
-              
-              
+              <Route path="/cardrecomendados/:id" element={<Produtos />} />
+              <Route path="/cardapio" element={<Cardapio />} />
+
+
             </Routes>
           </div>
           <Footer />

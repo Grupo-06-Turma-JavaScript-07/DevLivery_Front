@@ -1,6 +1,6 @@
 function Footer() {
     return (
-        <footer className="bg-[#7d8d2a] border-t border-[white]">
+        <footer className="bg-[#7d8d2a]">
             <div className="max-w-7xl mx-auto px-4 py-10 text-center text-sm text-[#4b4b4b]">
                 
                 {/* Links de Navegação */}
@@ -14,8 +14,7 @@ function Footer() {
 
                 {/* Container para centralizar o Logo e o Copyright */}
                 <div className="flex items-center justify-center text-[#f1f1f3] gap-2 mt-4">
-                    {/* Imagem do Logo */}
-                    <div className="w-6 h-6 rounded-full bg-[#e7a545] grid place-items-center font-black text-white text-xs">D</div>
+                   
                     
                     {/* Texto de Copyright */}
                     <p>Copyright © {new Date().getFullYear()} DevLivery. All rights reserved.</p>

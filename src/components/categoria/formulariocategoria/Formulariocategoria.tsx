@@ -4,18 +4,31 @@ import type Categoria from '../../../models/Categoria';
 
 import { ToastAlerta } from '../../../utils/ToastAlerta';
 import { atualizar, buscar, cadastrar } from '../../../service/Service';
+import { useAuthContext } from '../../../contexts/AuthContext';
 
 function FormularioCategoria() {
     const navigate = useNavigate();
     const { id } = useParams<{ id: string }>();
+    const { usuario } = useAuthContext();
+    const token = usuario.token;
 
-    // Estado para armazenar os dados da categoria
-    const [categoria, setCategoria] = useState<Categoria>({id: 0,
-        category: ''});
+    const [categoria, setCategoria] = useState<Categoria>({
+        id: 0,
+        categoria: '',
+    });
 
     // Função para buscar a categoria pelo ID (para o modo de edição)
     async function buscarPorId(id: string) {
-        await buscar(`/category/${id}`, setCategoria, {});
+        try {
+            await buscar(`/Category/${id}`, setCategoria, {
+                headers: {
+                    Authorization: token,
+                },
+            });
+        } catch (error: any) {
+            ToastAlerta('Categoria não encontrada!', 'erro');
+            navigate('/categorias/gerenciar');
+        }
     }
 
     // O useEffect busca os dados se um 'id' existir na URL (modo edição)
@@ -29,7 +42,7 @@ function FormularioCategoria() {
     function atualizarEstado(e: ChangeEvent<HTMLInputElement>) {
         setCategoria({
             ...categoria,
-            [e.target.name]: e.target.value
+            [e.target.name]: e.target.value,
         });
     }
 
@@ -37,19 +50,29 @@ function FormularioCategoria() {
     async function gerarNovaCategoria(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
 
-        // Se 'id' existe, estamos no modo EDIÇÃO
+        if (token === undefined || token === '') {
+            ToastAlerta('Você precisa estar logado!', 'erro');
+            return;
+        }
+
         if (id !== undefined) {
             try {
-                await atualizar(`/category`, categoria, setCategoria, {});
+                await atualizar(`/Category`, categoria, setCategoria, {
+                    headers: {
+                        Authorization: token,
+                    },
+                });
                 ToastAlerta('Categoria atualizada com sucesso!', 'sucesso');
-                retornar();
             } catch (error: any) {
                 ToastAlerta('Erro ao atualizar a Categoria.', 'erro');
             }
-        // Se 'id' não existe, estamos no modo CADASTRO
         } else {
             try {
-                await cadastrar(`/category`, categoria, setCategoria, {});
+                await cadastrar(`/Category`, categoria, setCategoria, {
+                    headers: {
+                        Authorization: token,
+                    },
+                });
                 ToastAlerta('Categoria cadastrada com sucesso!', 'sucesso');
             } catch (error: any) {
                 ToastAlerta('Erro ao cadastrar a Categoria.', 'erro');
@@ -63,29 +86,43 @@ function FormularioCategoria() {
     }
 
     return (
-        <div className="flex items-center justify-center bg-neutral-900 text-white min-h-[85vh]">
-            <form className="bg-neutral-800 p-8 rounded-lg w-full max-w-md" onSubmit={gerarNovaCategoria}>
-                <h1 className="text-4xl font-bold text-yellow-400 font-anton mb-8 text-center">
+        <div className="flex items-center justify-center bg-[#f1f1f3] text-black min-h-[85vh]">
+            <form
+                className="relative bg-white p-8 pt-0 rounded-lg shadow-lg w-full max-w-md overflow-hidden"
+                onSubmit={gerarNovaCategoria}
+            >
+                {/* Faixa verde no topo */}
+                <div className="absolute top-0 left-0 w-full h-2 bg-[#7d8d2a] rounded-t-lg"></div>
+
+                <h1 className="text-4xl font-bold text-[#7d8d2a] font-anton mt-10 mb-8 text-center">
                     {id ? 'Editar Categoria' : 'Cadastrar Categoria'}
                 </h1>
                 <div className="mb-6">
-                    <label htmlFor="category" className="block text-amber-100 font-bold mb-2">Nome da Categoria</label>
-                    <input 
-                        type="text" 
-                        id="category" 
-                        name="category" 
-                        value={categoria.category} 
+                    <label htmlFor="categoria" className="block text-gray-700 font-bold mb-2">
+                        Nome da Categoria
+                    </label>
+                    <input
+                        type="text"
+                        id="categoria"
+                        name="categoria"
+                        value={categoria.categoria}
                         onChange={(e: ChangeEvent<HTMLInputElement>) => atualizarEstado(e)}
-                        className="w-full p-3 bg-neutral-700 rounded focus:ring-2 focus:ring-yellow-400" 
-                        required 
+                        className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#7d8d2a]"
+                        required
                     />
                 </div>
                 <div className="flex justify-end gap-4">
-                    <button type="button" onClick={retornar}
-                        className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded">
+                    <button
+                        type="button"
+                        onClick={retornar}
+                        className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-lg transition-colors"
+                    >
                         Cancelar
                     </button>
-                    <button type="submit" className="bg-yellow-400 hover:bg-yellow-500 text-black font-bold py-2 px-4 rounded">
+                    <button
+                        type="submit"
+                        className="bg-[#7d8d2a] hover:bg-[#6b7b25] text-white font-bold py-2 px-4 rounded-lg transition-colors"
+                    >
                         {id ? 'Salvar' : 'Cadastrar'}
                     </button>
                 </div>
@@ -93,4 +130,5 @@ function FormularioCategoria() {
         </div>
     );
 }
+
 export default FormularioCategoria;

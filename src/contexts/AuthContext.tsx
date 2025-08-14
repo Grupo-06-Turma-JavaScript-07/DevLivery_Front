@@ -24,7 +24,7 @@ interface AuthProviderProps {
   children: ReactNode;
 }
 
-const AuthContext = createContext({} as AuthContextProps);
+export const AuthContext = createContext({} as AuthContextProps);
 
 export function AuthProvider({ children }: AuthProviderProps) {
   const navigate = useNavigate();

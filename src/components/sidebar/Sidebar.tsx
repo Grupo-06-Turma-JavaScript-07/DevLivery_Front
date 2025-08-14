@@ -25,6 +25,10 @@ function Sidebar() {
             <House size={24} />
             Home
         </Link>
+        <Link to="/recomendacoes" className="flex items-center gap-3 px-2 py-2 rounded hover:bg-white/20 transition-colors">
+            <MapPin size={24} />
+            Minhas Recomendações
+        </Link>
         {/* O link ativo tem um fundo sutilmente diferente */}
         <Link to="/perfil" className="flex items-center gap-3 px-2 py-2 rounded hover:bg-white/20 transition-colors bg-white/10 font-bold">
             <User size={24} />
