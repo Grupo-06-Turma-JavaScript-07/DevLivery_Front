@@ -1,7 +1,8 @@
-import { useEffect, useState, type Dispatch, type SetStateAction } from 'react';
+import { useEffect, useState} from 'react';
 import { useParams } from 'react-router-dom';
 import type Produtos from '../../../models/Produtos';
 import { ToastAlerta } from '../../../utils/ToastAlerta';
+import { buscar } from '../../../service/Service';
 
 function DetalheProdutos() {
   const { id } = useParams<{ id: string }>();
@@ -62,6 +63,4 @@ function DetalheProdutos() {
 
 export default DetalheProdutos;
 
-function buscar(arg0: string, setProduto: Dispatch<SetStateAction<Produtos>>, { }) {
-  throw new Error('Function not implemented.');
-}
+
