@@ -23,7 +23,7 @@ function Cardapio() {
     const [modoRecomendacao, setModoRecomendacao] = useState(false);
     const [categoriaSelecionada, setCategoriaSelecionada] = useState<number | null>(null);
 
-    // 2. ADICIONE O HOOK PARA LER OS PARÂMETROS DA URL
+    // O HOOK PARA LER OS PARÂMETROS DA URL
     const [searchParams] = useSearchParams();
 
     // Função unificada para buscar os dados
@@ -54,7 +54,7 @@ function Cardapio() {
         }
     }, [token, modoRecomendacao]);
 
-    // 3. ADICIONE O NOVO useEffect PARA LER A URL
+  
     // Este useEffect lê a URL assim que a página carrega
     useEffect(() => {
         // Pega o valor do parâmetro 'view'
