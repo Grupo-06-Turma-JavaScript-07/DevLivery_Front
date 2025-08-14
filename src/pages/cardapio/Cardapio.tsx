@@ -1,5 +1,6 @@
 // src/pages/cardapio/Cardapio.tsx
 import { useEffect, useState } from 'react';
+import { useSearchParams } from 'react-router-dom'; // 1. IMPORTE O useSearchParams
 import { useAuthContext } from '../../contexts/AuthContext';
 import { buscar } from '../../service/Service';
 
@@ -21,6 +22,9 @@ function Cardapio() {
     const [busca, setBusca] = useState('');
     const [modoRecomendacao, setModoRecomendacao] = useState(false);
     const [categoriaSelecionada, setCategoriaSelecionada] = useState<number | null>(null);
+
+    // 2. ADICIONE O HOOK PARA LER OS PARÂMETROS DA URL
+    const [searchParams] = useSearchParams();
 
     // Função unificada para buscar os dados
     async function fetchData() {
@@ -49,6 +53,21 @@ function Cardapio() {
             fetchData();
         }
     }, [token, modoRecomendacao]);
+
+    // 3. ADICIONE O NOVO useEffect PARA LER A URL
+    // Este useEffect lê a URL assim que a página carrega
+    useEffect(() => {
+        // Pega o valor do parâmetro 'view'
+        const viewMode = searchParams.get('view');
+        
+        // Se a URL contiver ?view=recomendados, ativa o modo de recomendação
+        if (viewMode === 'recomendados') {
+            setModoRecomendacao(true);
+        } else {
+            // Caso contrário, garante que o modo de recomendação esteja desativado
+            setModoRecomendacao(false);
+        }
+    }, [searchParams]); // Roda sempre que a URL mudar
 
     // Lógica de filtragem e busca
     const produtosFiltrados = produtos

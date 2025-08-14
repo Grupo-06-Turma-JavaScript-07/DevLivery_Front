@@ -1,3 +1,4 @@
+import { useCart } from "../../../contexts/CartContext";
 import type Produtos from "../../../models/Produtos";
 import BotaoAcao from "../../botoes/BotaoAcao";
 
@@ -6,6 +7,7 @@ interface CardProdutosProps {
 }
 
 function CardProdutos({ produto }: CardProdutosProps) {
+    const { adicionarProduto } = useCart();
     return (
         <div
             className="
@@ -47,7 +49,8 @@ function CardProdutos({ produto }: CardProdutosProps) {
                     <span className="text-s font-extrabold tracking-tight text-[#1a1a1a]">
                         R$ {produto.price}
                     </span>
-                    <BotaoAcao className="bg-[#7d8d2a] flex items-center hover:brightness-110 w-25 h-8 px-2 py-0.5 text-xs">
+                    <BotaoAcao className="bg-[#7d8d2a] flex items-center hover:brightness-110 w-25 h-8 px-2 py-0.5 text-xs"
+                    onClick={() => adicionarProduto(produto)}>
                         ADICIONAR
                     </BotaoAcao>
                 </div>

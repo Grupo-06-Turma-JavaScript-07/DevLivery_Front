@@ -19,56 +19,62 @@ import DeletarProdutos from "./components/produtos/deletarprodutos/DeletarProdut
 import Produtos from "./pages/produtos/Produtos";
 import GerenciarProduto from "./components/produtos/gerenciarprodutos/GerenciarProduto";
 import Cardapio from "./pages/cardapio/Cardapio";
+import { CartProvider } from "./contexts/CartContext";
+import Carrinho from "./pages/carrinho/Carrinho";
 
 
 function App() {
   return (
-    <>
-      <ToastContainer />
+    <>      
       {/* O BrowserRouter deve ser o componente mais externo para prover o contexto de rotas */}
       <BrowserRouter>
         <AuthProvider>
-          <Navbar />
-          <div className="min-h-[80vh]">
-            <Routes>
+          <CartProvider>
+            <ToastContainer />
+            <Navbar />
+            <div className="min-h-[80vh]">
+              <Routes>
 
-              {/* --- Rotas Públicas e de Autenticação --- */}
-              <Route path="/" element={<Login />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/cadastro" element={<Cadastro />} />
-
-
-              {/* --- Rotas do Usuário Comum --- */}
-              <Route path="/home" element={<Home />} />
-
-              <Route path="/perfil" element={<Perfil />} />
-              <Route path="/categorias" element={<CategoriasUsuario />} />
-              {/* <Route path="/produtos/categoria/:id" element={<ProdutosUsuario />} /> */}
-              <Route path="/produtos/:id" element={<DetalheProdutos />} />
-
-              {/* --- Rotas do Personal Trainer (Gerenciamento) --- */}
-              <Route path="/perfilfornecedor" element={<PerfilFornecedor />} />
-
-              {/* Gerenciamento de Categorias */}
-              <Route path="/categorias/gerenciar" element={<ListarCategorias />} />
-              <Route path="/cadastrarcategoria" element={<FormularioCategoria />} />
-              <Route path="/editarcategoria/:id" element={<FormularioCategoria />} />
-              <Route path="/deletarcategoria/:id" element={<DeletarCategoria />} />
-
-              {/* Gerenciamento de Produtos */}
-              <Route path="/produtos/gerenciar" element={<GerenciarProduto />} />
-              <Route path="/cadastrarproduto" element={<FormularioProduto />} />
-              <Route path="/editarproduto/:id" element={<FormularioProduto />} />
-              <Route path="/deletarproduto/:id" element={<DeletarProdutos />} />
-              <Route path="/cardrecomendados/:id" element={<Produtos />} />
-              <Route path="/cardapio" element={<Cardapio />} />
+                {/* --- Rotas Públicas e de Autenticação --- */}
+                <Route path="/" element={<Login />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/cadastro" element={<Cadastro />} />
 
 
-            </Routes>
-          </div>
-          <Footer />
-        </AuthProvider>
+                {/* --- Rotas do Usuário Comum --- */}
+                <Route path="/home" element={<Home />} />
+
+                <Route path="/perfil" element={<Perfil />} />
+                <Route path="/categorias" element={<CategoriasUsuario />} />
+                {/* <Route path="/produtos/categoria/:id" element={<ProdutosUsuario />} /> */}
+                <Route path="/produtos/:id" element={<DetalheProdutos />} />
+
+                {/* --- Rotas do Personal Trainer (Gerenciamento) --- */}
+                <Route path="/perfilfornecedor" element={<PerfilFornecedor />} />
+
+                {/* Gerenciamento de Categorias */}
+                <Route path="/categorias/gerenciar" element={<ListarCategorias />} />
+                <Route path="/cadastrarcategoria" element={<FormularioCategoria />} />
+                <Route path="/editarcategoria/:id" element={<FormularioCategoria />} />
+                <Route path="/deletarcategoria/:id" element={<DeletarCategoria />} />
+
+                {/* Gerenciamento de Produtos */}
+                <Route path="/produtos/gerenciar" element={<GerenciarProduto />} />
+                <Route path="/cadastrarproduto" element={<FormularioProduto />} />
+                <Route path="/editarproduto/:id" element={<FormularioProduto />} />
+                <Route path="/deletarproduto/:id" element={<DeletarProdutos />} />
+                <Route path="/cardrecomendados/:id" element={<Produtos />} />
+                <Route path="/cardapio" element={<Cardapio />} />
+                <Route path="/carrinho" element={<Carrinho />} />
+
+
+              </Routes>
+            </div>
+            <Footer />
+          </CartProvider >
+        </AuthProvider >
       </BrowserRouter>
+
     </>
   );
 }

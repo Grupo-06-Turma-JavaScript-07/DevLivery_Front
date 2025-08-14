@@ -1,79 +1,3 @@
-// import { useEffect, useState } from 'react';
-// import { Link } from "react-router-dom";
-// import type Categoria from "../../../models/Categoria";
-// import { Pencil, Trash } from "@phosphor-icons/react";
-// import { ToastAlerta } from '../../../utils/ToastAlerta';
-// import SidebarFornecedor from '../../sidebar/SidebarFornecedor';
-// import { buscar } from '../../../service/Service'; // Importação correta da função buscar
-
-// function ListarCategorias() {
-//   const [categorias, setCategorias] = useState<Categoria[]>([]);
-//   const navigate = useNavigate();
-
-//   const [postagens, setPostagens] = useState<Postagem[]>([]);
-
-//   const { usuario, handleLogout } = useContext(AuthContext);
-//   const token = usuario.token;
-
-//   async function buscarCategorias() {
-//     try {
-//       await buscar('/Category', setCategorias, {
-//         headers: {
-//           Authorization: token,
-//         },
-//       })
-
-//     } catch (error: any) {
-//       if (error.toString().includes('403')) {
-//         handleLogout()
-//       }
-//     }
-//   }
-
-//   useEffect(() => {
-//     buscarCategorias();
-//   }, [categorias.length]);
-
-//   return (
-//     <div className="flex bg-[#f1f1f3] text-black min-h-[85vh]">
-//       <SidebarFornecedor />
-//       <main className="flex-1 p-8">
-//         <div className="flex justify-between items-center mb-8">
-//           <h1 className="text-4xl font-bold text-[#7d8d2a] font-anton">
-//             Gerenciador de categorias
-//           </h1>
-//           <Link
-//             to="/cadastrarcategoria"
-//             className="bg-[#7d8d2a] text-[#f1f1f3] font-bold py-2 px-4 rounded hover:bg-[#7d8d2a] transition-colors"
-//           >
-//             Cadastrar Nova Categoria
-//           </Link>
-//         </div>
-
-//         <div className="bg-[#7d8d2a] p-6 rounded-lg">
-
-//           {Array.isArray(categorias) && categorias.map(categoria => (
-//             <div key={categoria.id} className="flex justify-between items-center p-4 border-b border-[#7d8d2a] hover:bg-[#7d8d2a]/50">
-
-//               <p className="text-lg text-amber-100">{categoria.categoria}</p>
-//               <div className="flex gap-4">
-//                 <Link to={`/Category/${categoria.id}`} className="text-blue-400 hover:text-blue-300">
-//                   <Pencil size={24} />
-//                 </Link>
-//                 <Link to={`/Category/${categoria.id}`} className="text-red-500 hover:text-red-400">
-//                   <Trash size={24} />
-//                 </Link>
-//               </div>
-//             </div>
-//           ))}
-//         </div>
-//       </main>
-//     </div>
-//   );
-// }
-
-// export default ListarCategorias;
-
 
 // src/components/categorias/listacategorias/ListarCategorias.tsx
 
@@ -131,7 +55,7 @@ function ListarCategorias() {
             <main className="flex-1 p-8">
                 <div className="flex justify-between items-center mb-8">
                     <h1 className="text-4xl font-bold text-[#7d8d2a] font-anton">
-                        Gerenciador de categorias
+                        GERENCIAR CATEGORIAS
                     </h1>
                     <Link
                         to="/cadastrarcategoria"

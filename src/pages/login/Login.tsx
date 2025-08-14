@@ -34,7 +34,7 @@ export default function Login() {
 
       {/* Coluna da Imagem (Esquerda) */}
       <div className="min-h-screen bg-cover bg-center flex items-center justify-center px-4"
-        style={{ backgroundImage: "url('https://ik.imagekit.io/qvv2cbqgy/Design%20sem%20nome.png.PNG?updatedAt=1755129906115')" }}>
+        style={{ backgroundImage: "url('https://ik.imagekit.io/qvv2cbqgy/Peachy_20250813212226976.jpg?updatedAt=1755131149980')" }}>
 
 
 
