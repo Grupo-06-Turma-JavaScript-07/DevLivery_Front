@@ -77,6 +77,75 @@ O projeto foi construído com uma arquitetura moderna, separando as responsabili
 
 ---
 
+
+## 💿 Como Acessar e Rodar o Projeto
+
+Para executar este projeto localmente, você precisará ter o **Back-end** e o **Front-end** rodando em terminais separados.
+
+### Pré-requisitos
+
+Antes de começar, garanta que você tenha instalado:
+* [Node.js](https://nodejs.org/en/)
+* [Yarn](https://classic.yarnpkg.com/lang/en/docs/install/) (para o Front-end)
+* [Git](https://git-scm.com/)
+* Um cliente de banco de dados **PostgreSQL** (como DBeaver ou PgAdmin).
+
+### 🎲 Rodando o Back-end (Servidor)
+
+1.  **Clone o repositório do Back-end:**
+    ```bash
+    git clone [https://github.com/Grupo-06-Turma-JavaScript-07/Devlivery](https://github.com/Grupo-06-Turma-JavaScript-07/Devlivery)
+    ```
+2.  **Acesse a pasta do projeto:**
+    ```bash
+    cd Devlivery
+    ```
+3.  **Instale as dependências:**
+    ```bash
+    npm install
+    ```
+4.  **Configure o Banco de Dados:**
+    * Certifique-se de que seu servidor PostgreSQL está rodando.
+    * Crie um banco de dados para o projeto.
+    * As credenciais e o nome do banco são configurados no seu back-end, provavelmente em um arquivo de serviço de dados (`data/services/dev.service.ts`) ou em variáveis de ambiente.
+
+5.  **Inicie o servidor:**
+    ```bash
+    npm run start:dev
+    ```
+    * O servidor estará rodando em `http://localhost:4000`.
+    * Você pode acessar a documentação da API em `http://localhost:4000/swagger`.
+
+### 🖥️ Rodando o Front-end (Cliente)
+
+Você pode acessar diretamente pelo link: `https://dev-livery-front.vercel.app`, ou seguir o passo a passo para rodar localmente:
+
+1.  **Clone o repositório do Front-end:**
+    ```bash
+    git clone [https://github.com/Grupo-06-Turma-JavaScript-07/DevLivery_Front](https://github.com/Grupo-06-Turma-JavaScript-07/DevLivery_Front)
+    ```
+2.  **Acesse a pasta do projeto:**
+    ```bash
+    cd DevLivery_Front
+    ```
+3.  **Instale as dependências:**
+    ```bash
+    yarn install
+    ```
+4.  **Configure as Variáveis de Ambiente:**
+    * Na raiz do projeto, crie um arquivo chamado `.env`.
+    * Dentro dele, adicione a seguinte linha, apontando para o seu back-end local:
+      ```
+      VITE_API_URL=http://localhost:4000
+      ```
+5.  **Inicie o servidor:**
+    ```bash
+    yarn dev
+    ```
+    * A aplicação estará acessível em `http://localhost:5173` (ou a porta indicada no seu terminal).
+  
+---------------
+
 ## 👨‍💻 Equipe de Desenvolvedores
 
 | [<img src="https://ik.imagekit.io/pedrolazzz/Juliana_Freddi_2_1.jpg?updatedAt=1754919604935" width="115" height="115"><br><sub>Juliana Freddi</sub>](https://github.com/ddifreju) | [<img src="https://ik.imagekit.io/pedrolazzz/Larissa.jpg?updatedAt=1754919604772" width="115" height="115"><br><sub>Larissa Santana</sub>](https://github.com/Santana-larissa) | [<img src="https://ik.imagekit.io/pedrolazzz/perfil20quadrado.jpg?updatedAt=1754919604936" width="115" height="115"><br><sub>Ludmily Oliveira</sub>](https://github.com/LudmilyS) | [<img src="https://ik.imagekit.io/pedrolazzz/Untitled-1.png?updatedAt=1754571230256" width="115" height="115"><br><sub>Matheus Schneider</sub>](https://github.com/matheusschneider1) | [<img src="https://ik.imagekit.io/pedrolazzz/Pedro%20Elias%20%20(3).jpg?updatedAt=1754566149442" width="115" height="115"><br><sub>Pedro Elias</sub>](https://github.com/pedro-eliasd) |
